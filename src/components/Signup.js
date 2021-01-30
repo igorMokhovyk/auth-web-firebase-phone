@@ -1,7 +1,7 @@
 import {Card, Form, Button, Alert} from 'react-bootstrap';
 import { useState } from "react";
 import {useAuth} from "../context/AuthContext";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 
   export default function Signup() {
     // const emailRef = useRef()
@@ -13,6 +13,7 @@ import {Link} from "react-router-dom";
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [passwordConfirm, setPasswordConfirm] = useState('')
+    const history = useHistory();
 
     const emailHandler = (event) => {
       setEmail(event.target.value)
@@ -37,6 +38,7 @@ import {Link} from "react-router-dom";
         setError("")
         setLoading(true)
         await signup(email, password)
+        history.push("/") // if signup success - push to Dashboard
       } catch {
         setError("Failed to create an account")
       }

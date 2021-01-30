@@ -16,6 +16,10 @@ export function AuthProvider({children}) {
     return auth.createUserWithEmailAndPassword(email, password) // return Promise
   }
 
+  function login(email, password) {
+    return auth.signInWithEmailAndPassword(email, password) // return Promise
+  }
+
   useEffect(() => {
     return auth.onAuthStateChanged(user => {
       setCurrentUser(user)
@@ -27,7 +31,8 @@ export function AuthProvider({children}) {
 
   const value = {
     currentUser,
-    signup
+    signup,
+    login
   }
 
   return (
