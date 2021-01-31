@@ -20,6 +20,22 @@ export function AuthProvider({children}) {
     return auth.signInWithEmailAndPassword(email, password) // return Promise
   }
 
+  function logout() {
+    return auth.signOut()
+  }
+
+  function resetPassword(email) {
+    return auth.sendPasswordResetEmail(email)
+  }
+
+  function updateEmail(email) {
+    return auth.currentUser.updateEmail(email)
+  }
+
+  function updatePassword(password) {
+    return auth.currentUser.updatePassword(password)
+  }
+
   useEffect(() => {
     return auth.onAuthStateChanged(user => {
       setCurrentUser(user)
@@ -32,7 +48,11 @@ export function AuthProvider({children}) {
   const value = {
     currentUser,
     signup,
-    login
+    login,
+    logout,
+    resetPassword,
+    updateEmail,
+    updatePassword
   }
 
   return (

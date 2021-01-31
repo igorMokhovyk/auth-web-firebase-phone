@@ -1,17 +1,17 @@
 import {Card, Form, Button, Alert} from 'react-bootstrap';
-import { useState } from "react";
+import {useState} from "react";
 import {useAuth} from "../context/AuthContext";
 import {Link, useHistory} from "react-router-dom";
 
-export default function Login() {
+export default function ForgotPassword() {
   // const emailRef = useRef()
   // const passwordRef = useRef()
   // const passwordConfirmRef = useRef()
-  const { login } = useAuth()
+  const {resetPassword} = useAuth()
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [message, setMessage] = useState('')
   const history = useHistory();
 
 
@@ -19,22 +19,18 @@ export default function Login() {
     setEmail(event.target.value)
   }
 
-  const passwordHandler = (event) => {
-    setPassword(event.target.value)
-  }
-
-
 
   async function handleSubmit(e) {
     e.preventDefault()
 
     try {
+      setMessage('')
       setError("")
       setLoading(true)
-      await login(email, password)
-      history.push("/") // if login success - push to Dashboard
+      await resetPassword(email)
+      setMessage('Check your inbox for futher instructions')
     } catch {
-      setError("Failed to sign in")
+      setError("Failed to reset password")
     }
 
     setLoading(false)
@@ -44,23 +40,20 @@ export default function Login() {
     <>
       <Card>
         <Card.Body>
-          <h2 className="text-center mb-4">Log In</h2>
+          <h2 className="text-center mb-4">Password Reset</h2>
           {error && <Alert variant="danger">{error}</Alert>}
+          {message && <Alert variant="success">{message}</Alert>}
           <Form onSubmit={handleSubmit}>
             <Form.Group id="email">
               <Form.Label>Email</Form.Label>
-              <Form.Control type="email" onChange={emailHandler} required />
-            </Form.Group>
-            <Form.Group id="password">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="password" onChange={passwordHandler} required />
+              <Form.Control type="email" onChange={emailHandler} required/>
             </Form.Group>
             <Button disabled={loading} className="w-100" type="submit">
-              Log In
+              Reset Password
             </Button>
           </Form>
           <div className='w-100 text-center mt-3'>
-            <Link to='/forgot-password'>Forgot Password</Link>
+            <Link to='/login'>Login</Link>
           </div>
         </Card.Body>
       </Card>
